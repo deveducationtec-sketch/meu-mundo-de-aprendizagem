@@ -1,0 +1,21 @@
+{
+  "name": "meu-mundo-de-aprendizagem",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 4173",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 127.0.0.1 --port 4173",
+    "check": "tsc -b --pretty false"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.57.4",
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "vite": "^7.1.4"
+  }
+}
+

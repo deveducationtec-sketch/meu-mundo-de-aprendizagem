@@ -1,0 +1,64 @@
+:root {
+  font-family: Inter, ui-rounded, "Segoe UI", sans-serif;
+  color: #163247;
+  background: #f4fbfc;
+  font-synthesis: none;
+  --navy: #173c55;
+  --blue: #28799b;
+  --teal: #2a928a;
+  --mint: #dff5ee;
+  --yellow: #ffd36a;
+  --white: #ffffff;
+  --focus: #9b4d00;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input { font: inherit; }
+button { min-height: 48px; cursor: pointer; }
+button:disabled { cursor: not-allowed; opacity: .65; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 4px solid var(--focus); outline-offset: 3px; }
+.skip-link { position: absolute; top: -80px; left: 1rem; z-index: 10; padding: .8rem 1rem; color: white; background: var(--navy); }
+.skip-link:focus { top: 1rem; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem clamp(1rem,5vw,4rem); background: var(--white); border-bottom: 1px solid #cce1e7; }
+.brand { display: flex; align-items: center; gap: .7rem; color: var(--navy); text-decoration: none; font-weight: 800; }
+.brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 14px; color: white; background: var(--teal); }
+main { width: min(1080px, calc(100% - 2rem)); margin: 0 auto; padding: 3rem 0 4rem; }
+.welcome { display: flex; justify-content: space-between; align-items: end; gap: 2rem; }
+.eyebrow, .game-status { margin: 0 0 .4rem; color: var(--teal); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: .85rem; }
+h1 { margin: 0; font-size: clamp(2.2rem,7vw,4.5rem); line-height: 1; letter-spacing: -.04em; color: var(--navy); }
+.intro { max-width: 650px; margin: 1rem 0 0; font-size: 1.15rem; line-height: 1.6; }
+.primary-button, .secondary-button, .accessibility-button { border-radius: 14px; padding: .75rem 1.1rem; font-weight: 800; }
+.primary-button { border: 0; color: white; background: var(--navy); }
+.secondary-button, .accessibility-button { border: 2px solid var(--navy); color: var(--navy); background: white; }
+.preferences { margin-top: 1.5rem; padding: 1.25rem; border: 2px solid #b8dfe0; border-radius: 18px; background: white; }
+.preferences h2 { margin-top: 0; }
+.preferences label { display: inline-flex; align-items: center; gap: .6rem; margin: .5rem 1.5rem .5rem 0; font-weight: 700; }
+.preferences input { width: 24px; height: 24px; }
+.catalogue { margin-top: 3.5rem; }
+.catalogue > h2 { font-size: 1.4rem; }
+.game-card { display: grid; grid-template-columns: minmax(240px, .9fr) 1.2fr; overflow: hidden; border-radius: 28px; background: white; border: 1px solid #cce1e7; box-shadow: 0 18px 50px rgba(23,60,85,.1); }
+.game-art { min-height: 330px; display: flex; align-items: center; justify-content: center; gap: .75rem; background: linear-gradient(145deg,#a8e1d4,#dff5ee); }
+.game-art span { display: grid; place-items: center; width: 72px; height: 88px; border-radius: 18px; background: white; color: var(--navy); font-size: 2rem; font-weight: 900; box-shadow: 0 8px 0 rgba(23,60,85,.14); transform: rotate(-4deg); }
+.game-art span:nth-child(2) { transform: translateY(-18px) rotate(2deg); background: var(--yellow); }
+.game-art span:nth-child(3) { transform: rotate(5deg); }
+.game-copy { padding: clamp(1.5rem,5vw,3.5rem); }
+.game-copy h3 { margin: .2rem 0 .7rem; font-size: clamp(1.8rem,4vw,2.8rem); }
+.game-copy p { line-height: 1.6; }
+.game-copy ul { display: flex; flex-wrap: wrap; gap: .5rem; list-style: none; padding: 0; margin: 1.5rem 0; }
+.game-copy li { padding: .5rem .7rem; border-radius: 999px; background: var(--mint); font-weight: 700; }
+.prototype-message { margin-top: 1.5rem; padding: 1.5rem; border-left: 6px solid var(--teal); border-radius: 14px; background: white; }
+footer { padding: 1.5rem; text-align: center; color: #496573; background: #e6f2f4; }
+.reduce-motion *, .reduce-motion *::before, .reduce-motion *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+.high-contrast { --navy: #001b2d; --blue: #004b6b; --teal: #006d65; --mint: #d7fff5; --focus: #c13c00; }
+
+@media (max-width: 720px) {
+  .brand span:last-child { max-width: 180px; }
+  main { padding-top: 2rem; }
+  .welcome { align-items: stretch; flex-direction: column; }
+  .game-card { grid-template-columns: 1fr; }
+  .game-art { min-height: 240px; }
+  .accessibility-button { align-self: flex-start; }
+}
+

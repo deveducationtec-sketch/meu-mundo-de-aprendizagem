@@ -101,6 +101,7 @@ app.innerHTML = `
       <section id="privacidade" class="privacy-note" aria-labelledby="privacy-title">
         <h2 id="privacy-title">Privacidade nesta fase</h2>
         <p>Não pedimos nome, e-mail, idade, diagnóstico ou qualquer dado da criança. Não há conta, anúncios ou rastreamento de desempenho.</p>
+        <p>Dúvidas sobre privacidade: <a href="mailto:dev.educationtec@gmail.com">dev.educationtec@gmail.com</a>.</p>
       </section>
     </section>
 

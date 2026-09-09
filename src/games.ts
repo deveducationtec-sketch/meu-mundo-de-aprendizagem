@@ -1,5 +1,5 @@
-export type GameId = 'routine' | 'pairs' | 'sequence' | 'focus' | 'classify'
-export type GameTheme = 'mint' | 'violet' | 'coral' | 'blue' | 'yellow'
+export type GameId = 'routine' | 'pairs' | 'sequence' | 'focus' | 'classify' | 'sounds'
+export type GameTheme = 'mint' | 'violet' | 'coral' | 'blue' | 'yellow' | 'berry'
 
 export type GameDefinition = {
   id: GameId
@@ -62,6 +62,16 @@ export const gameDefinitions: GameDefinition[] = [
     instruction: 'Observe o objeto e escolha a categoria que combina com ele.',
     skills: ['Classificação', 'Vocabulário', 'Associação'],
     theme: 'yellow',
+  },
+  {
+    id: 'sounds',
+    title: 'Quem Faz Esse Som?',
+    shortTitle: 'Quem Faz Esse Som?',
+    icon: '🎧',
+    description: 'Ouça animais e instrumentos e escolha a figura correspondente entre quatro opções.',
+    instruction: 'Escolha uma categoria, ajuste o volume e ouça com tranquilidade. Cada som pode ser tocado até três vezes.',
+    skills: ['Estimulação auditiva', 'Atenção', 'Associação'],
+    theme: 'berry',
   },
 ]
 
@@ -722,11 +732,288 @@ function mountClassify(shell: ShellElements): void {
   start()
 }
 
+function mountSounds(shell: ShellElements): () => void {
+  type SoundCategoryId = 'animals' | 'instruments'
+  type SoundItem = {
+    id: string
+    category: SoundCategoryId
+    emoji: string
+    label: string
+    file: string
+    difficulty: 1 | 2 | 3
+  }
+
+  const soundItems: SoundItem[] = [
+    { id: 'dog', category: 'animals', emoji: '🐶', label: 'Cachorro', file: '/audio/dog.mp3', difficulty: 1 },
+    { id: 'rooster', category: 'animals', emoji: '🐓', label: 'Galo', file: '/audio/rooster.mp3', difficulty: 1 },
+    { id: 'cow', category: 'animals', emoji: '🐄', label: 'Vaca', file: '/audio/cow.mp3', difficulty: 1 },
+    { id: 'horse', category: 'animals', emoji: '🐴', label: 'Cavalo', file: '/audio/horse.mp3', difficulty: 2 },
+    { id: 'cat', category: 'animals', emoji: '🐱', label: 'Gato', file: '/audio/cat.mp3', difficulty: 3 },
+    { id: 'sheep', category: 'animals', emoji: '🐑', label: 'Ovelha', file: '/audio/sheep.mp3', difficulty: 3 },
+    { id: 'drums', category: 'instruments', emoji: '🥁', label: 'Bateria', file: '/audio/drums.mp3', difficulty: 1 },
+    { id: 'piano', category: 'instruments', emoji: '🎹', label: 'Piano', file: '/audio/piano.mp3', difficulty: 1 },
+    { id: 'trumpet', category: 'instruments', emoji: '🎺', label: 'Trompete', file: '/audio/trumpet.mp3', difficulty: 2 },
+    { id: 'flute', category: 'instruments', emoji: '🪈', label: 'Flauta', file: '/audio/flute.mp3', difficulty: 2 },
+    { id: 'guitar', category: 'instruments', emoji: '🎸', label: 'Violão', file: '/audio/guitar-acoustic.mp3', difficulty: 3 },
+    { id: 'violin', category: 'instruments', emoji: '🎻', label: 'Violino', file: '/audio/violin.mp3', difficulty: 3 },
+  ]
+
+  const categories: Array<{ id: SoundCategoryId; emoji: string; label: string; description: string }> = [
+    { id: 'animals', emoji: '🐶 🐱', label: 'Animais', description: 'Cachorro, gato, vaca, cavalo, galo e ovelha.' },
+    { id: 'instruments', emoji: '🎹 🎻', label: 'Instrumentos', description: 'Piano, violão, bateria, flauta, trompete e violino.' },
+  ]
+
+  shell.content.innerHTML = `
+    <div class="activity-heading">
+      <p class="stage-label">Estimulação auditiva</p>
+      <h2>Ouça e encontre a figura</h2>
+      <p>O som começa somente quando você apertar o botão. Peça a um adulto para deixar o volume confortável.</p>
+    </div>
+    <section class="sound-settings" aria-labelledby="sound-settings-title">
+      <div>
+        <h3 id="sound-settings-title">Controle do som</h3>
+        <p>Você pode pausar a qualquer momento.</p>
+      </div>
+      <label class="volume-control" for="sound-volume">
+        <span>Volume do jogo: <strong class="volume-value">45%</strong></span>
+        <input id="sound-volume" type="range" min="0" max="100" value="45" step="5" />
+      </label>
+    </section>
+    <section class="sound-category-panel" aria-labelledby="sound-category-title">
+      <h3 id="sound-category-title">O que você quer ouvir?</h3>
+      <div class="sound-category-grid"></div>
+    </section>
+    <section class="sound-round" hidden aria-labelledby="sound-round-title">
+      <div class="sound-round-heading">
+        <div><p class="stage-label sound-stage-label"></p><h3 id="sound-round-title">Qual figura faz este som?</h3></div>
+        <button class="text-button change-category-button" type="button">Trocar categoria</button>
+      </div>
+      <div class="sound-player-panel">
+        <button class="primary-button play-sound-button" type="button">▶ Ouvir o som</button>
+        <button class="secondary-button stop-sound-button" type="button" disabled>■ Parar</button>
+        <p class="listen-count">0 de 3 escutas</p>
+      </div>
+      <div class="sound-options" aria-label="Quatro alternativas"></div>
+      <div class="game-actions">
+        <button class="primary-button next-sound-button" type="button" hidden>Próximo som</button>
+      </div>
+    </section>
+  `
+
+  const categoryPanel = query<HTMLElement>(shell.content, '.sound-category-panel')
+  const categoryGrid = query<HTMLElement>(shell.content, '.sound-category-grid')
+  const roundPanel = query<HTMLElement>(shell.content, '.sound-round')
+  const optionsGrid = query<HTMLElement>(shell.content, '.sound-options')
+  const playButton = query<HTMLButtonElement>(shell.content, '.play-sound-button')
+  const stopButton = query<HTMLButtonElement>(shell.content, '.stop-sound-button')
+  const nextButton = query<HTMLButtonElement>(shell.content, '.next-sound-button')
+  const volumeInput = query<HTMLInputElement>(shell.content, '#sound-volume')
+  const volumeValue = query<HTMLElement>(shell.content, '.volume-value')
+  const listenCount = query<HTMLElement>(shell.content, '.listen-count')
+  const stageLabel = query<HTMLElement>(shell.content, '.sound-stage-label')
+  const player = new Audio()
+  player.preload = 'metadata'
+  player.volume = Number(volumeInput.value) / 100
+
+  let selectedCategory: SoundCategoryId | null = null
+  let roundItems: SoundItem[] = []
+  let roundIndex = 0
+  let currentTarget: SoundItem | null = null
+  let listens = 0
+  let answered = false
+  let isPlaying = false
+
+  categoryGrid.innerHTML = categories.map((category) => `
+    <button class="sound-category-button" type="button" data-sound-category="${category.id}">
+      <span aria-hidden="true">${category.emoji}</span>
+      <strong>${category.label}</strong>
+      <small>${category.description}</small>
+    </button>
+  `).join('')
+
+  const updatePlayerButtons = (): void => {
+    playButton.disabled = isPlaying || listens >= 3 || answered
+    stopButton.disabled = !isPlaying
+    playButton.textContent = listens === 0 ? '▶ Ouvir o som' : '↻ Ouvir novamente'
+    listenCount.textContent = `${listens} de 3 escutas`
+  }
+
+  const stopAudio = (): void => {
+    player.pause()
+    player.currentTime = 0
+    isPlaying = false
+    updatePlayerButtons()
+  }
+
+  const optionsFor = (target: SoundItem, pool: SoundItem[]): SoundItem[] => {
+    const otherItems = shuffle(pool.filter((item) => item.id !== target.id))
+      .sort((first, second) => {
+        const firstDistance = Math.abs(first.difficulty - target.difficulty)
+        const secondDistance = Math.abs(second.difficulty - target.difficulty)
+        return roundIndex < 2 ? secondDistance - firstDistance : firstDistance - secondDistance
+      })
+    return shuffle([target, ...otherItems.slice(0, 3)])
+  }
+
+  const renderRound = (): void => {
+    const category = categories.find((item) => item.id === selectedCategory)
+    const pool = soundItems.filter((item) => item.category === selectedCategory)
+    currentTarget = roundItems[roundIndex]
+    if (!category || !currentTarget) return
+
+    stopAudio()
+    listens = 0
+    answered = false
+    player.src = currentTarget.file
+    nextButton.hidden = true
+    shell.progress.textContent = `${roundIndex + 1} de ${roundItems.length}`
+    stageLabel.textContent = `${category.label} · som ${roundIndex + 1} de ${roundItems.length}`
+    setFeedback(shell.feedback, 'Aperte “Ouvir o som” quando estiver pronto.')
+
+    optionsGrid.innerHTML = optionsFor(currentTarget, pool).map((item) => `
+      <button class="sound-option" type="button" data-sound-id="${item.id}" disabled>
+        <span aria-hidden="true">${item.emoji}</span><strong>${item.label}</strong>
+      </button>
+    `).join('')
+    optionsGrid.querySelectorAll<HTMLButtonElement>('[data-sound-id]').forEach((button) => {
+      button.addEventListener('click', () => chooseSound(button.dataset.soundId ?? ''))
+    })
+    updatePlayerButtons()
+    playButton.focus()
+  }
+
+  const finishCategory = (): void => {
+    const category = categories.find((item) => item.id === selectedCategory)
+    const otherCategory = categories.find((item) => item.id !== selectedCategory)
+    if (!category || !otherCategory) return
+    stopAudio()
+    setFeedback(shell.feedback, `Você explorou cinco sons de ${category.label.toLowerCase()}!`, 'success')
+    showCompletion(shell.completion, 'Exploração sonora completa!', 'Você ouviu, observou e associou cinco sons.', [
+      {
+        label: `Ouvir ${otherCategory.label.toLowerCase()}`,
+        className: 'primary-button',
+        onClick: () => startCategory(otherCategory.id),
+      },
+      {
+        label: 'Jogar esta categoria novamente',
+        className: 'secondary-button',
+        onClick: () => startCategory(category.id),
+      },
+    ])
+  }
+
+  const chooseSound = (soundId: string): void => {
+    if (!currentTarget || answered || listens === 0) return
+    const chosen = soundItems.find((item) => item.id === soundId)
+    if (!chosen) return
+
+    if (chosen.id !== currentTarget.id) {
+      setFeedback(shell.feedback, 'Vamos ouvir com atenção e tentar novamente.', 'try')
+      optionsGrid.querySelector<HTMLButtonElement>(`[data-sound-id="${soundId}"]`)?.focus()
+      return
+    }
+
+    answered = true
+    stopAudio()
+    optionsGrid.querySelectorAll<HTMLButtonElement>('button').forEach((button) => {
+      button.disabled = true
+      button.classList.toggle('is-correct', button.dataset.soundId === currentTarget?.id)
+    })
+    setFeedback(shell.feedback, `Muito bem! É ${currentTarget.label.toLowerCase()}.`, 'success')
+    updatePlayerButtons()
+
+    if (roundIndex === roundItems.length - 1) {
+      finishCategory()
+      return
+    }
+
+    nextButton.hidden = false
+    nextButton.focus()
+  }
+
+  const playSound = async (): Promise<void> => {
+    if (!currentTarget || isPlaying || listens >= 3 || answered) return
+    isPlaying = true
+    updatePlayerButtons()
+    try {
+      player.currentTime = 0
+      await player.play()
+      listens += 1
+      optionsGrid.querySelectorAll<HTMLButtonElement>('button').forEach((button) => { button.disabled = false })
+      setFeedback(shell.feedback, `Escuta ${listens} de 3. Escolha uma das quatro figuras.`)
+      updatePlayerButtons()
+    } catch {
+      isPlaying = false
+      setFeedback(shell.feedback, 'Não foi possível tocar este som. Tente novamente.', 'try')
+      updatePlayerButtons()
+    }
+  }
+
+  function startCategory(categoryId: SoundCategoryId): void {
+    selectedCategory = categoryId
+    roundItems = shuffle(soundItems.filter((item) => item.category === categoryId))
+      .slice(0, 5)
+      .sort((first, second) => first.difficulty - second.difficulty)
+    roundIndex = 0
+    categoryPanel.hidden = true
+    roundPanel.hidden = false
+    hideCompletion(shell.completion)
+    renderRound()
+  }
+
+  const showCategories = (): void => {
+    stopAudio()
+    selectedCategory = null
+    categoryPanel.hidden = false
+    roundPanel.hidden = true
+    hideCompletion(shell.completion)
+    shell.progress.textContent = 'Escolha uma categoria'
+    setFeedback(shell.feedback, 'Ajuste o volume e escolha animais ou instrumentos.')
+    categoryGrid.querySelector<HTMLButtonElement>('button')?.focus()
+  }
+
+  categoryGrid.querySelectorAll<HTMLButtonElement>('[data-sound-category]').forEach((button) => {
+    button.addEventListener('click', () => startCategory(button.dataset.soundCategory as SoundCategoryId))
+  })
+  playButton.addEventListener('click', () => { void playSound() })
+  stopButton.addEventListener('click', () => {
+    stopAudio()
+    setFeedback(shell.feedback, 'Som parado. Você pode ouvir novamente ou escolher uma figura.')
+    playButton.focus()
+  })
+  nextButton.addEventListener('click', () => {
+    roundIndex += 1
+    renderRound()
+  })
+  query<HTMLButtonElement>(shell.content, '.change-category-button').addEventListener('click', showCategories)
+  volumeInput.addEventListener('input', () => {
+    player.volume = Number(volumeInput.value) / 100
+    volumeValue.textContent = `${volumeInput.value}%`
+  })
+  player.addEventListener('ended', () => {
+    isPlaying = false
+    updatePlayerButtons()
+  })
+  player.addEventListener('error', () => {
+    isPlaying = false
+    setFeedback(shell.feedback, 'Este som não carregou. Verifique a conexão e tente novamente.', 'try')
+    updatePlayerButtons()
+  })
+
+  showCategories()
+
+  return () => {
+    stopAudio()
+    player.removeAttribute('src')
+    player.load()
+  }
+}
+
 export function mountGame(gameId: GameId, host: HTMLElement, onBack: () => void): void {
   const game = gameDefinitions.find((definition) => definition.id === gameId)
   if (!game) throw new Error(`Jogo desconhecido: ${gameId}`)
   const shell = gameShell(host, game)
-  query<HTMLButtonElement>(host, '.back-button').addEventListener('click', onBack)
+  let cleanup: (() => void) | undefined
 
   switch (gameId) {
     case 'routine': mountRoutine(shell); break
@@ -734,5 +1021,11 @@ export function mountGame(gameId: GameId, host: HTMLElement, onBack: () => void)
     case 'sequence': mountSequence(shell); break
     case 'focus': mountFocus(shell); break
     case 'classify': mountClassify(shell); break
+    case 'sounds': cleanup = mountSounds(shell); break
   }
+
+  query<HTMLButtonElement>(host, '.back-button').addEventListener('click', () => {
+    cleanup?.()
+    onBack()
+  })
 }

@@ -1,9 +1,26 @@
-import { readFileSync, readdirSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs'
 import { extname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const requiredDocuments = [
   'docs/legal/AVISO_DE_PRIVACIDADE_FREE.md',
+  'docs/FICHA_PEDAGOGICA_006.md',
+  'docs/LICENCAS_AUDIO.md',
+]
+
+const requiredAudioAssets = [
+  'cat.mp3',
+  'cow.mp3',
+  'dog.mp3',
+  'drums.mp3',
+  'flute.mp3',
+  'guitar-acoustic.mp3',
+  'horse.mp3',
+  'piano.mp3',
+  'rooster.mp3',
+  'sheep.mp3',
+  'trumpet.mp3',
+  'violin.mp3',
 ]
 
 const blockers = []
@@ -24,6 +41,9 @@ const forbiddenInFreePhase = [
   ['type="email"', 'campo de e-mail'],
   ['type="password"', 'campo de senha'],
   ['supabase', 'integração Supabase'],
+  ['getusermedia', 'acesso a câmera ou microfone'],
+  ['mediarecorder', 'gravação de mídia'],
+  ['autoplay', 'reprodução automática de mídia'],
 ]
 
 const sourceDirectory = new URL('../src/', import.meta.url)
@@ -40,10 +60,21 @@ for (const file of activeSourceFiles) {
   }
 }
 
+for (const file of requiredAudioAssets) {
+  const path = fileURLToPath(new URL(`../public/audio/${file}`, import.meta.url))
+  if (!existsSync(path)) {
+    blockers.push(`public/audio/${file} — áudio obrigatório ausente`)
+    continue
+  }
+  if (statSync(path).size < 1_000) {
+    blockers.push(`public/audio/${file} — arquivo de áudio vazio ou inválido`)
+  }
+}
+
 if (blockers.length > 0) {
   console.error('Publicação bloqueada. Resolva os seguintes campos obrigatórios:')
   for (const blocker of blockers) console.error(`- ${blocker}`)
   process.exitCode = 1
 } else {
-  console.log('Fase Free pronta: aviso preenchido e nenhum cadastro detectado no código ativo.')
+  console.log('Fase Free pronta: documentos e áudios presentes e nenhum cadastro detectado no código ativo.')
 }

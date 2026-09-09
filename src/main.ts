@@ -54,7 +54,7 @@ app.innerHTML = `
         <div>
           <p class="eyebrow">Aprender no seu ritmo</p>
           <h1 id="welcome-title" tabindex="-1">Escolha, jogue e descubra</h1>
-          <p class="intro">Cinco jogos gratuitos, sem anúncios e sem cadastro. Aqui, cada criança pode observar, experimentar e tentar novamente com tranquilidade.</p>
+          <p class="intro">Seis jogos gratuitos, sem anúncios e sem cadastro. Aqui, cada criança pode observar, escutar, experimentar e tentar novamente com tranquilidade.</p>
         </div>
         <button class="accessibility-button" type="button" aria-expanded="false" aria-controls="preferences">
           Ajustar experiência

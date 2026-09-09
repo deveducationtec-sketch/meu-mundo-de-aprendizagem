@@ -1,7 +1,7 @@
 # Plano dos Jogos — Fase Free
 
-**Versão:** 1.0  
-**Data:** 08/09/2026  
+**Versão:** 1.1
+**Data:** 09/09/2026
 **Situação:** implementado para validação funcional e pedagógica
 
 ## 1. Princípio pedagógico
@@ -20,6 +20,7 @@ tratamento ou avaliação clínica.
 | Repita a Sequência | observar e remontar símbolos | memória, ordem e percepção | sequências de 3, 4 e 5 símbolos |
 | Jardim do Foco | selecionar somente a figura indicada | atenção visual, seleção e persistência | três buscas visuais |
 | Cada Coisa no Seu Lugar | separar objetos por categoria | classificação, vocabulário e associação | seis objetos em três categorias |
+| Quem Faz Esse Som? | associar sons ambientais a quatro figuras | estimulação auditiva, atenção e associação | cinco sons, dos mais contrastantes aos mais próximos |
 
 ## 3. Regras comuns de interação
 
@@ -31,13 +32,23 @@ tratamento ou avaliação clínica.
 - Nenhum áudio automático, piscar de tela ou movimento indispensável à compreensão.
 - Preferências locais para reduzir movimento, aumentar contraste, ampliar texto e simplificar o visual.
 
-## 4. Privacidade e proteção infantil
+## 4. Regras específicas do jogo sonoro
+
+- Categorias iniciais: animais e instrumentos musicais.
+- Quatro alternativas visuais em todas as rodadas.
+- Até três reproduções voluntárias por som.
+- Controle próprio de volume, reprodução e parada.
+- Sem música de fundo, pontuação, vidas ou transição automática.
+- Buzinas de carro, caminhão e barco e sons de grito estão fora do acervo.
+- Posicionamento exclusivamente educativo, sem finalidade terapêutica ou diagnóstica.
+
+## 5. Privacidade e proteção infantil
 
 Os jogos não solicitam nem enviam nome, e-mail, idade, localização, diagnóstico ou desempenho.
 Não há login, anúncios, chat, compras ou integração com banco de dados. As preferências de
 acessibilidade ficam somente no navegador e não identificam o usuário.
 
-## 5. Validação antes da divulgação ampla
+## 6. Validação antes da divulgação ampla
 
 Professor e psicopedagoga deverão observar, em uso acompanhado:
 
@@ -51,12 +62,14 @@ Professor e psicopedagoga deverão observar, em uso acompanhado:
 Qualquer divulgação deve descrever os jogos como recursos educacionais complementares. Uma
 avaliação positiva não autoriza alegações clínicas nem substitui validação com público diverso.
 
-## 6. Referências de acessibilidade adotadas
+## 7. Referências de acessibilidade adotadas
 
 - WCAG 2.2: princípios de conteúdo perceptível, operável, compreensível e robusto.
 - WAI: instruções em passos claros e linguagem simples.
 - WAI: atividades sem limite de tempo quando o tempo não é essencial.
 - Estatuto Digital da Criança e do Adolescente: proteção integral no ambiente digital.
+- WAI: áudio iniciado pelo usuário e com mecanismo de controle.
+- AssociaSom: referência acadêmica para associação entre imagens e sons, sem adoção de alegação clínica.
 
 Links oficiais estão registrados na documentação e devem ser revisados antes de mudanças
 relevantes no produto.

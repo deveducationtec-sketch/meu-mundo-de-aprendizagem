@@ -89,3 +89,16 @@
 - A interface oferecerá redução de movimento, contraste elevado, ampliação de texto e simplificação visual.
 - O posicionamento será educacional e inclusivo para todas as crianças, com atenção especial à previsibilidade,
   clareza e carga sensorial; não haverá promessa de tratamento para TEA, TDAH ou qualquer condição.
+
+## DEC-011 - Sexto jogo de estimulação auditiva
+
+- Data: 09/09/2026.
+- Decisão: incluir `Quem Faz Esse Som?` como sexto jogo da Fase Free.
+- Posicionamento: atividade educativa de estimulação auditiva e associação som-imagem, sem finalidade
+  terapêutica, diagnóstica ou de avaliação clínica.
+- Conteúdo inicial: sons ambientais de animais e instrumentos musicais.
+- Interação aprovada: quatro alternativas e até três reproduções voluntárias por som.
+- Progressão aprovada: sons mais contrastantes primeiro e sons mais próximos depois.
+- Sons proibidos: buzinas de carro, caminhão e barco e sons de grito.
+- Não haverá música de fundo, áudio automático, vidas, cronômetro, ranking ou armazenamento de desempenho.
+- Os arquivos de áudio serão locais e terão origem e licença registradas em `docs/LICENCAS_AUDIO.md`.

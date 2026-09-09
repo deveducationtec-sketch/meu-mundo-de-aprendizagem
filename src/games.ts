@@ -1,5 +1,9 @@
-export type GameId = 'routine' | 'pairs' | 'sequence' | 'focus' | 'classify' | 'sounds'
-export type GameTheme = 'mint' | 'violet' | 'coral' | 'blue' | 'yellow' | 'berry'
+import { mountCurriculumGame, type CurriculumGameId } from './curriculum-games'
+
+type OriginalGameId = 'routine' | 'pairs' | 'sequence' | 'focus' | 'classify' | 'sounds'
+export type GameId = OriginalGameId | CurriculumGameId
+export type GameArea = 'attention' | 'sounds' | 'language' | 'math' | 'nature' | 'society'
+export type GameTheme = 'mint' | 'violet' | 'coral' | 'blue' | 'yellow' | 'berry' | 'leaf' | 'orange' | 'sky' | 'indigo'
 
 export type GameDefinition = {
   id: GameId
@@ -10,6 +14,7 @@ export type GameDefinition = {
   instruction: string
   skills: string[]
   theme: GameTheme
+  area: GameArea
 }
 
 export const gameDefinitions: GameDefinition[] = [
@@ -22,6 +27,7 @@ export const gameDefinitions: GameDefinition[] = [
     instruction: 'Escolha o cartão que acontece primeiro e continue até completar a rotina.',
     skills: ['Sequência', 'Rotina', 'Associação'],
     theme: 'mint',
+    area: 'attention',
   },
   {
     id: 'pairs',
@@ -32,6 +38,7 @@ export const gameDefinitions: GameDefinition[] = [
     instruction: 'Abra dois cartões por vez. Se forem diferentes, observe e escolha continuar.',
     skills: ['Memória visual', 'Atenção', 'Observação'],
     theme: 'violet',
+    area: 'attention',
   },
   {
     id: 'sequence',
@@ -42,6 +49,7 @@ export const gameDefinitions: GameDefinition[] = [
     instruction: 'Observe os símbolos, esconda o modelo quando estiver pronto e repita a ordem.',
     skills: ['Memória', 'Ordem', 'Percepção'],
     theme: 'coral',
+    area: 'attention',
   },
   {
     id: 'focus',
@@ -52,6 +60,7 @@ export const gameDefinitions: GameDefinition[] = [
     instruction: 'Observe a figura-alvo e encontre todas as iguais no jardim.',
     skills: ['Atenção visual', 'Seleção', 'Persistência'],
     theme: 'blue',
+    area: 'attention',
   },
   {
     id: 'classify',
@@ -62,6 +71,7 @@ export const gameDefinitions: GameDefinition[] = [
     instruction: 'Observe o objeto e escolha a categoria que combina com ele.',
     skills: ['Classificação', 'Vocabulário', 'Associação'],
     theme: 'yellow',
+    area: 'attention',
   },
   {
     id: 'sounds',
@@ -72,6 +82,51 @@ export const gameDefinitions: GameDefinition[] = [
     instruction: 'Escolha uma categoria, ajuste o volume e ouça com tranquilidade. Cada som pode ser tocado até três vezes.',
     skills: ['Estimulação auditiva', 'Atenção', 'Associação'],
     theme: 'berry',
+    area: 'sounds',
+  },
+  {
+    id: 'words',
+    title: 'Palavra em Pedaços',
+    shortTitle: 'Palavra em Pedaços',
+    icon: '🔤',
+    description: 'Complete palavras com vogais e sílabas, usando figuras e quatro peças de resposta.',
+    instruction: 'Observe a figura e escolha a vogal ou sílaba que completa a palavra. São três etapas, sem cronômetro.',
+    skills: ['Alfabetização', 'Sílabas', 'Associação'],
+    theme: 'leaf',
+    area: 'language',
+  },
+  {
+    id: 'math',
+    title: 'Quantos Ficaram?',
+    shortTitle: 'Quantos Ficaram?',
+    icon: '🔢',
+    description: 'Conte, compare, junte e retire pequenas quantidades representadas por figuras.',
+    instruction: 'Observe os grupos e escolha uma entre quatro respostas. Você pode contar no seu ritmo.',
+    skills: ['Contagem', 'Comparação', 'Operações'],
+    theme: 'orange',
+    area: 'math',
+  },
+  {
+    id: 'science',
+    title: 'Laboratório da Sementinha',
+    shortTitle: 'Laboratório da Sementinha',
+    icon: '🌱',
+    description: 'Explore partes das plantas, condições de cuidado e uma sequência de crescimento.',
+    instruction: 'Observe cada situação, escolha uma possibilidade e confira a explicação da descoberta.',
+    skills: ['Observação', 'Plantas', 'Sequência'],
+    theme: 'sky',
+    area: 'nature',
+  },
+  {
+    id: 'place-time',
+    title: 'Onde e Quando?',
+    shortTitle: 'Onde e Quando?',
+    icon: '🧭',
+    description: 'Conheça lugares da comunidade, leia mapas simples e compare mudanças e permanências.',
+    instruction: 'Observe cenas, mapas e comparações para escolher a alternativa que combina com as pistas.',
+    skills: ['Comunidade', 'Localização', 'Tempo'],
+    theme: 'indigo',
+    area: 'society',
   },
 ]
 
@@ -1022,6 +1077,17 @@ export function mountGame(gameId: GameId, host: HTMLElement, onBack: () => void)
     case 'focus': mountFocus(shell); break
     case 'classify': mountClassify(shell); break
     case 'sounds': cleanup = mountSounds(shell); break
+    case 'words':
+    case 'math':
+    case 'science':
+    case 'place-time':
+      mountCurriculumGame(gameId, {
+        ...shell,
+        setFeedback: (message, kind) => setFeedback(shell.feedback, message, kind),
+        showCompletion: (title, copy, actions) => showCompletion(shell.completion, title, copy, actions),
+        hideCompletion: () => hideCompletion(shell.completion),
+      })
+      break
   }
 
   query<HTMLButtonElement>(host, '.back-button').addEventListener('click', () => {

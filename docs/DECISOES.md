@@ -102,3 +102,21 @@
 - Sons proibidos: buzinas de carro, caminhão e barco e sons de grito.
 - Não haverá música de fundo, áudio automático, vidas, cronômetro, ranking ou armazenamento de desempenho.
 - Os arquivos de áudio serão locais e terão origem e licença registradas em `docs/LICENCAS_AUDIO.md`.
+
+## DEC-012 — Biblioteca piloto com dez jogos
+
+- Data: 09/09/2026.
+- Decisão: completar a biblioteca do piloto mensal com quatro jogos de foco curricular.
+- Público pedagógico de referência: 1º ano e início do 2º ano do Ensino Fundamental, com entrada
+  pictórica, instruções curtas e possibilidade de mediação por adulto.
+- Jogos incluídos: Palavra em Pedaços, Quantos Ficaram?, Laboratório da Sementinha e Onde e Quando?.
+- Áreas incluídas: alfabetização, matemática, ciências, história e geografia.
+- O catálogo terá filtros por área, sem recomendar um jogo com base em perfil, condição ou desempenho.
+- A progressão ocorrerá por etapas de conteúdo; não haverá pontos, ranking, vidas, cronômetro,
+  recompensa acumulativa ou bloqueio de conteúdo.
+- O mês será um piloto de usabilidade, acessibilidade e adequação pedagógica. Não constitui pesquisa
+  clínica, avaliação diagnóstica nem demonstração de eficácia de aprendizagem.
+- O sistema continuará sem cadastro, telemetria ou armazenamento de respostas. Observações serão
+  registradas apenas por adultos, sem nome, diagnóstico ou outro dado pessoal da criança.
+- Alegações sobre benefícios educacionais futuros dependerão de avaliação metodologicamente adequada,
+  nova decisão formal e revisão pedagógica, ética, jurídica e técnica.

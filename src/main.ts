@@ -1,5 +1,5 @@
 import './styles.css'
-import { gameDefinitions, mountGame, type GameId } from './games'
+import { gameDefinitions, mountGame, type GameArea, type GameId } from './games'
 
 type Preferences = {
   reduceMotion: boolean
@@ -16,11 +16,21 @@ const defaultPreferences: Preferences = {
   calmVisuals: false,
 }
 
+const areaFilters: Array<{ id: 'all' | GameArea; label: string }> = [
+  { id: 'all', label: 'Todos' },
+  { id: 'attention', label: 'Atenção e organização' },
+  { id: 'sounds', label: 'Sons' },
+  { id: 'language', label: 'Linguagem' },
+  { id: 'math', label: 'Matemática' },
+  { id: 'nature', label: 'Natureza' },
+  { id: 'society', label: 'Tempo e lugar' },
+]
+
 const app = document.querySelector<HTMLDivElement>('#app')
 if (!app) throw new Error('Elemento principal da aplicação não encontrado.')
 
 const catalogueCards = gameDefinitions.map((game, index) => `
-  <article class="game-card theme-${game.theme}">
+  <article class="game-card theme-${game.theme}" data-game-area="${game.area}">
     <div class="game-art" aria-hidden="true">
       <span class="game-number">${String(index + 1).padStart(2, '0')}</span>
       <span class="game-icon">${game.icon}</span>
@@ -54,7 +64,7 @@ app.innerHTML = `
         <div>
           <p class="eyebrow">Aprender no seu ritmo</p>
           <h1 id="welcome-title" tabindex="-1">Escolha, jogue e descubra</h1>
-          <p class="intro">Seis jogos gratuitos, sem anúncios e sem cadastro. Aqui, cada criança pode observar, escutar, experimentar e tentar novamente com tranquilidade.</p>
+          <p class="intro">Dez jogos gratuitos, sem anúncios e sem cadastro. Aqui, cada criança pode observar, escutar, experimentar e tentar novamente com tranquilidade.</p>
         </div>
         <button class="accessibility-button" type="button" aria-expanded="false" aria-controls="preferences">
           Ajustar experiência
@@ -84,9 +94,15 @@ app.innerHTML = `
 
       <section class="catalogue" aria-labelledby="catalogue-title">
         <div class="section-heading">
-          <div><p class="section-kicker">Biblioteca inicial</p><h2 id="catalogue-title">Escolha um jogo</h2></div>
+          <div><p class="section-kicker">Biblioteca piloto</p><h2 id="catalogue-title">Escolha um jogo</h2></div>
           <p>Todos funcionam com mouse, toque ou teclado.</p>
         </div>
+        <div class="catalogue-filters" role="group" aria-label="Filtrar jogos por área">
+          ${areaFilters.map((filter, index) => `
+            <button class="filter-button" type="button" data-area-filter="${filter.id}" aria-pressed="${index === 0}">${filter.label}</button>
+          `).join('')}
+        </div>
+        <p class="catalogue-result" role="status" aria-live="polite">Mostrando os 10 jogos.</p>
         <div class="catalogue-grid">${catalogueCards}</div>
       </section>
 
@@ -218,6 +234,27 @@ get<HTMLButtonElement>('#reset-preferences')?.addEventListener('click', () => {
   applyPreferences(preferences)
   savePreferences(preferences)
   get<HTMLInputElement>('#reduce-motion')?.focus()
+})
+
+document.querySelectorAll<HTMLButtonElement>('[data-area-filter]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const selectedArea = button.dataset.areaFilter as 'all' | GameArea
+    const cards = [...document.querySelectorAll<HTMLElement>('[data-game-area]')]
+    let visible = 0
+
+    document.querySelectorAll<HTMLButtonElement>('[data-area-filter]').forEach((filterButton) => {
+      filterButton.setAttribute('aria-pressed', String(filterButton === button))
+    })
+
+    cards.forEach((card) => {
+      const matches = selectedArea === 'all' || card.dataset.gameArea === selectedArea
+      card.hidden = !matches
+      if (matches) visible += 1
+    })
+
+    const result = get<HTMLElement>('.catalogue-result')
+    if (result) result.textContent = visible === 1 ? 'Mostrando 1 jogo.' : `Mostrando ${visible} jogos.`
+  })
 })
 
 document.querySelectorAll<HTMLButtonElement>('.play-button').forEach((button) => {

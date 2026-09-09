@@ -4,7 +4,7 @@ Portal gratuito de jogos educacionais com recursos inclusivos. Projeto aprovado 
 
 ## Estado atual
 
-Fase Free com biblioteca jogável: portal aberto, sem cadastro, sem anúncios e com seis jogos. A versão pública está disponível em [games.fabricadeaudiobooks.app.br](https://games.fabricadeaudiobooks.app.br).
+Fase Free com biblioteca piloto jogável: portal aberto, sem cadastro, sem anúncios e com dez jogos. A versão pública está disponível em [games.fabricadeaudiobooks.app.br](https://games.fabricadeaudiobooks.app.br).
 
 ## Acesso
 
@@ -18,6 +18,10 @@ Os jogos são acessados diretamente pelo catálogo. Não existe login, criação
 4. **Jardim do Foco:** busca visual por figuras-alvo em três etapas.
 5. **Cada Coisa no Seu Lugar:** classificação de objetos em comer, vestir e brincar.
 6. **Quem Faz Esse Som?:** associação de sons de animais e instrumentos a quatro alternativas visuais.
+7. **Palavra em Pedaços:** completar palavras com vogais e sílabas.
+8. **Quantos Ficaram?:** contagem, comparação, adição e subtração com apoio visual.
+9. **Laboratório da Sementinha:** partes, cuidados e crescimento de plantas.
+10. **Onde e Quando?:** comunidade, mapas simples, mudanças e permanências.
 
 Todos os jogos permitem:
 
@@ -79,13 +83,11 @@ de contato do aviso de privacidade ou houver recursos de cadastro no código ati
 ## Documentação
 
 - `docs/DECISOES.md`: decisões oficiais e limites de autorização.
-- `docs/FASE_FREE.md`: escopo oficial atualmente ativo.
-- `docs/PLANO_JOGOS_FASE_FREE.md`: especificação dos seis jogos da biblioteca.
+- `docs/PLANO_JOGOS_FASE_FREE.md`: especificação dos dez jogos da biblioteca.
+- `docs/PLANO_PILOTO_10_JOGOS.md`: roteiro ético de observação durante um mês.
+- `docs/REFERENCIAS_PEDAGOGICAS.md`: BNCC, artigos consultados e limites das evidências.
 - `docs/FICHA_PEDAGOGICA_001.md`: especificação inicial do primeiro jogo.
 - `docs/FICHA_PEDAGOGICA_006.md`: especificação do jogo de estimulação auditiva.
+- `docs/FICHA_PEDAGOGICA_007.md` a `docs/FICHA_PEDAGOGICA_010.md`: fichas dos quatro jogos curriculares.
 - `docs/LICENCAS_AUDIO.md`: autoria, origem, licença e tratamento dos sons.
-- `docs/ROTEIRO_VALIDACAO_PEDAGOGICA.md`: avaliação estruturada para professor e psicopedagoga.
 - `docs/legal/AVISO_DE_PRIVACIDADE_FREE.md`: aviso curto aplicável à fase atual.
-- `docs/legal/CONFORMIDADE_INFANTIL.md`: matriz de proteção infantil.
-- `docs/legal/`: também preserva as minutas corporativas para eventual fase futura.
-- `supabase/`: estrutura corporativa futura, inativa e nunca aplicada a ambiente externo.

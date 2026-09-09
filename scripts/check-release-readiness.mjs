@@ -5,7 +5,13 @@ import { fileURLToPath } from 'node:url'
 const requiredDocuments = [
   'docs/legal/AVISO_DE_PRIVACIDADE_FREE.md',
   'docs/FICHA_PEDAGOGICA_006.md',
+  'docs/FICHA_PEDAGOGICA_007.md',
+  'docs/FICHA_PEDAGOGICA_008.md',
+  'docs/FICHA_PEDAGOGICA_009.md',
+  'docs/FICHA_PEDAGOGICA_010.md',
   'docs/LICENCAS_AUDIO.md',
+  'docs/PLANO_PILOTO_10_JOGOS.md',
+  'docs/REFERENCIAS_PEDAGOGICAS.md',
 ]
 
 const requiredAudioAssets = [
@@ -21,6 +27,19 @@ const requiredAudioAssets = [
   'sheep.mp3',
   'trumpet.mp3',
   'violin.mp3',
+]
+
+const requiredGameTitles = [
+  'Organize Meu Dia',
+  'Encontre os Pares',
+  'Repita a Sequência',
+  'Jardim do Foco',
+  'Cada Coisa no Seu Lugar',
+  'Quem Faz Esse Som?',
+  'Palavra em Pedaços',
+  'Quantos Ficaram?',
+  'Laboratório da Sementinha',
+  'Onde e Quando?',
 ]
 
 const blockers = []
@@ -71,10 +90,17 @@ for (const file of requiredAudioAssets) {
   }
 }
 
+const gamesSource = readFileSync(new URL('../src/games.ts', import.meta.url), 'utf8')
+for (const title of requiredGameTitles) {
+  if (!gamesSource.includes(`title: '${title}'`)) {
+    blockers.push(`src/games.ts — jogo obrigatório ausente: ${title}`)
+  }
+}
+
 if (blockers.length > 0) {
   console.error('Publicação bloqueada. Resolva os seguintes campos obrigatórios:')
   for (const blocker of blockers) console.error(`- ${blocker}`)
   process.exitCode = 1
 } else {
-  console.log('Fase Free pronta: documentos e áudios presentes e nenhum cadastro detectado no código ativo.')
+  console.log('Fase Free pronta: dez jogos, documentos e áudios presentes e nenhum cadastro detectado no código ativo.')
 }
